@@ -1,0 +1,68 @@
+{
+	"main": "node_modules/expo/AppEntry.js",
+	"scripts": {
+		"start": "expo start",
+		"android": "expo start --android",
+		"ios": "expo start --ios",
+		"web": "expo start --web",
+		"eject": "expo eject",
+		"lint": "eslint . --ext .js",
+		"build": "expo build:android -t apk"
+	},
+	"dependencies": {
+		"@expo-google-fonts/lato": "^0.1.0",
+		"@expo-google-fonts/oswald": "^0.1.0",
+		"@react-native-async-storage/async-storage": "^1.15.5",
+		"@react-native-community/masked-view": "0.1.10",
+		"@react-navigation/bottom-tabs": "^5.11.11",
+		"@react-navigation/drawer": "^5.12.5",
+		"@react-navigation/material-top-tabs": "^5.3.15",
+		"@react-navigation/native": "^5.9.4",
+		"@react-navigation/stack": "^5.14.5",
+		"expo": "~41.0.1",
+		"expo-camera": "~11.0.3",
+		"expo-constants": "~10.1.3",
+		"expo-font": "~9.1.0",
+		"expo-location": "~12.0.4",
+		"expo-secure-store": "~10.1.0",
+		"expo-status-bar": "~1.0.4",
+		"expo-web-browser": "^9.1.0",
+		"firebase": "8.2.3",
+		"formik": "^2.2.9",
+		"i18next": "^20.3.2",
+		"mobx": "^6.3.2",
+		"mobx-react": "^7.2.0",
+		"react": "17.0.2",
+		"react-dom": "17.0.2",
+		"react-i18next": "^11.11.0",
+		"react-native": "https://github.com/expo/react-native/archive/sdk-40.0.1.tar.gz",
+		"react-native-dotenv": "^2.5.5",
+		"react-native-dropdown-picker": "^5.1.21",
+		"react-native-elements": "^3.4.2",
+		"react-native-keyboard-aware-scroll-view": "^0.9.4",
+		"react-native-maps": "0.27.1",
+		"react-native-modal": "^12.0.2",
+		"react-native-modal-dropdown": "https://github.com/siemiatj/react-native-modal-dropdown",
+		"react-native-paper": "^4.9.2",
+		"react-native-reanimated": "~2.1.0",
+		"react-native-safe-area-context": "3.2.0",
+		"react-native-screens": "~3.0.0",
+		"react-native-svg": "^12.1.0",
+		"react-native-tab-view": "^3.0.1",
+		"react-native-table-component": "^1.2.1",
+		"react-native-vector-icons": "^8.1.0",
+		"react-native-web": "~0.16.5",
+		"react-query": "^3.17.0",
+		"styled-components": "^5.3.0",
+		"yup": "^0.32.9"
+	},
+	"devDependencies": {
+		"@babel/core": "^7.14.5"
+	},
+	"private": true,
+	"rnpm": {
+		"assets": [
+			"resources/fonts"
+		]
+	}
+}

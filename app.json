@@ -1,0 +1,50 @@
+
+{
+	"expo": {
+		"name": "ITD Disaster Organizer",
+		"slug": "itddo",
+		"version": "0.1.0",
+		"orientation": "portrait",
+		"splash": {
+			"image": "./assets/splash.png",
+			"resizeMode": "cover",
+			"backgroundColor": "#21266a"
+		},
+		"updates": {
+			"fallbackToCacheTimeout": 0
+		},
+		"assetBundlePatterns": [ "**/*" ],
+		"ios": {
+			"bundleIdentifier": "com.itd.itddo",
+			"supportsTablet": false,
+			"userInterfaceStyle": "light",
+			"icon": "./assets/iconAppStore.png",
+			"config": {
+				"googleMapsApiKey": ""
+			},
+			"infoPlist": {
+				"NSCameraUsageDescription": "This app uses your camera to add photos to the report",
+				"NSLocationWhenInUseUsageDescription": "This app uses your location to mark the position of the report"
+			}
+		},
+		"android": {
+			"package": "com.itd.itddo",
+			"adaptiveIcon": {
+				"foregroundImage": "./assets/icon.png",
+				"backgroundColor": "#21266a"
+			},
+			"versionCode": 1,
+			"config": {
+				"googleMaps": {
+				  "apiKey": ""
+				}
+			  },
+			"permissions": [
+				"CAMERA",
+				"LOCATION",
+				"ACCESS_FINE_LOCATION"
+			]
+		},
+    "description": "Aplicación para el reporte de daño en recursos de distribución energética durante desastres naturales"
+  	}
+}
