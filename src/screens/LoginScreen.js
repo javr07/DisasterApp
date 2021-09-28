@@ -124,12 +124,9 @@ const LoginScreen = ({ navigation, rootStore }) => {
 					password: ''
 				})
 			})
-			getPosition();
 			configStore.getPersistentConfigObject();
 			configStore.getPersistentLanguage();
-			mapStore.getPersistentTransformers();
-			mapStore.getPersistentMeters();
-			mapStore.getPersistentMetersAssigned();
+			
 			configStore.setCurrentScreen('Login Screen');
 			return unsubscribe;
 		});

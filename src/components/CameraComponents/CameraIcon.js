@@ -2,7 +2,7 @@ import React from 'react';
 import { TouchableOpacity, Text } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-function CameraIcon({ onPress, name, size, color, left, top, right }) {
+function CameraIcon({ onPress, name, size, color, left, top, bottom, right }) {
 	return (
 		<TouchableOpacity
 			onPress={onPress}
@@ -10,6 +10,8 @@ function CameraIcon({ onPress, name, size, color, left, top, right }) {
 				position : 'absolute',
 				left     : left,
 				top      : top,
+				bottom   : bottom,
+				right    : right,
 				height   : size,
 				width    : size
 			}}

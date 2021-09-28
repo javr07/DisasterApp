@@ -620,70 +620,13 @@ const MapComponent = ({ navigation, rootStore }) => {
 		});
 		return clone;
 	};
+
+
 	// COMPONENTN JSX
 	return (
 		<SafeAreaViewStyled>
-			<StyledView>
-				{/* MAP VIEW */}
-				<StyledMapView
-					provider={PROVIDER_GOOGLE}
-					ref={mapRef}
-					showsCompass={false}
-					showsMyLocationButton={false}
-					rotateEnabled={true}
-					showsUserLocation={true}
-					initialRegion={{
-						latitude       :
-							configStore.initialPosition ? configStore.initialPosition.latitude :
-							configStore.configObject.latitude,
-						longitude      :
-							configStore.initialPosition ? configStore.initialPosition.longitude :
-							configStore.configObject.longitude,
-						latitudeDelta  : 0.0015,
-						longitudeDelta : 0.005
-					}}
-					
-				>
-					{/* NEW METER MARKER */}
-					{mapStore.newMeterState && <NewMeterMarker marker={mapStore.newMeterMarker} color="#f542c8" />}
 
-					{/* NEW TRANSFORMER MARKER */}
-					{mapStore.newTransformerState && (
-						<NewTransformerMarker marker={mapStore.newTransformerMarker} color="#f542c8" />
-					)}
 
-					{/* TRANSFORMERS MARKERS */}
-					{mapStore.fetchedData && 
-					mapStore.transformers &&
-						mapStore.transformers.map((transformer) => {
-							return (
-								<TransformerMarker
-									key={transformer.pkey}
-									transformer={transformer}
-									onPress={handleTransformerSelection}
-								/>
-							);
-						})}
-
-					{/* METERS MARKERS */}
-					{mapStore.fetchedData && 
-					mapStore.meters &&
-						mapStore.meters.map((meter) => {
-							return <MeterMarker key={meter.name} meter={meter} onPress={handleMeterSelection} />;
-						})}
-
-					{/* POLYLINE COMPONENT */}
-					{mapStore.polylineState && (
-						<Polyline
-							coordinates={mapStore.transMeterCoordinates}
-							strokeColors={[ '#5e6673' ]}
-							strokeWidth={4}
-							strokeColor="#000"
-						/>
-					)}
-
-					{/* MAPVIEW END */}
-				</StyledMapView>
 
 				{mapStore.isMeterUnassignLayer && 
 				!mapStore.polylineState &&
@@ -915,9 +858,6 @@ const MapComponent = ({ navigation, rootStore }) => {
 					}
 					rootStore={rootStore}
 				/>
-
-				{/* MAIN VIEW END */}
-			</StyledView>
 		</SafeAreaViewStyled>
 	);
 };

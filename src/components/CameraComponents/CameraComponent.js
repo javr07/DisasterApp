@@ -1,37 +1,23 @@
 // MAIN IMPORTS
-import React, { useEffect } from 'react';
-import { StyleSheet, Text, View, BackHandler, Alert } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { StyleSheet, Text, View, ImageBackground} from 'react-native';
 import { Camera } from 'expo-camera';
 import { useIsFocused } from '@react-navigation/native';
 import { inject, observer } from 'mobx-react';
 
 // COMPONENTS IMPORTS
 import CameraIcon from './CameraIcon';
-import IonIcon from './IonIcon';
 
 // COMPONENT
 const CameraComponent = ({ navigation, rootStore }) => {
 	// STATES
-	const { configStore, cameraStore, equipmentStore } = rootStore;
-
+	const { configStore, cameraStore } = rootStore;
 	const { hasPermission, type, flashMode } = cameraStore;
 
 	const isFocused = useIsFocused();
-
-	// HANDLE BACKBUTTON
-	// const __handleBackButton = () => {
-	// 	setCurrentScreen('Camera Screen');
-	// 	const backAction = () => {
-	// 		if (currentScreen === 'Camera Screen') {
-	// 			navigation.navigate('Map');
-	// 		}
-	// 	};
-
-	// 	const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction);
-
-	// 	return () => backHandler.remove();
-	// };
-
+	const cameraRef = useRef(null);
+	const [isPreviewVisible, setPreviewVisible] = useState(false)
+  	const [capturedImage, setCapturedImage] = useState(null)
 	useEffect(() => {
 		(async () => {
 			const { status } = await Camera.requestPermissionsAsync();
@@ -41,7 +27,6 @@ const CameraComponent = ({ navigation, rootStore }) => {
 			configStore.setCurrentScreen('Camera Screen');
 			return unsubscribe;
 		});
-		// __handleBackButton();
 	}, []);
 
 	if (hasPermission === null) {
@@ -62,23 +47,36 @@ const CameraComponent = ({ navigation, rootStore }) => {
 
 	const __handleCameraType = () => {
 		cameraStore.setType(
-
-				type === Camera.Constants.Type.back ? Camera.Constants.Type.front :
-				Camera.Constants.Type.back
+			type === Camera.Constants.Type.back ? Camera.Constants.Type.front :
+			Camera.Constants.Type.back
 		);
 	};
 
-	const __handleGetQRCode = (e) => {
-		const meterQR = ('M' + e.data.toUpperCase()).split(' ')[0];
-		equipmentStore.setQRcode(meterQR);
+	const __handleTakePicture = async () => {
+		if (!cameraRef) return;
+		const photo = await cameraRef.current.takePictureAsync();
+		console.log(photo);
+		setPreviewVisible(true);
+		setCapturedImage(photo);
+	};
+	const __handleRetakePicture = async () => {
+		setCapturedImage(null);
+		setPreviewVisible(false);
+	};
+	const __handleSaveCurrent= async () => {
+		console.log(capturedImage); //SEND THIS PHOTO TO THE NEXT COMPONENT		
 		navigation.navigate('Map');
 	};
 
 	// COMPONENT JSX
 	return (
 		<View style={styles.container}>
-			{isFocused && (
-				<Camera style={styles.container} type={type} onBarCodeScanned={__handleGetQRCode} flashMode={flashMode}>
+			{isFocused && !isPreviewVisible? (
+				<Camera 
+					ref={cameraRef}
+					style={styles.container} 
+					type={type} 
+					flashMode={flashMode}>
 					<View style={styles.container}>
 						{/* FLIP CAMERA ICON */}
 						<CameraIcon
@@ -108,12 +106,58 @@ const CameraComponent = ({ navigation, rootStore }) => {
 								name="flash-off"
 								color="rgba(225, 228, 232,0.7)"
 							/>}
-
-						{/* SCANNER ICON */}
-						<IonIcon right="0%" top="25%" name="scan-outline" size={400} color="rgba(225, 228, 232,0.3)" />
+						{/* SHUTTER ICON */}
+						<CameraIcon
+							onPress={__handleTakePicture}
+							left="40%"
+							bottom="3%"
+							size={80}
+							name="camera"
+							color="#ffff"
+						/>
 					</View>
 				</Camera>
-			)}
+			):
+			(
+				<View
+				style={{
+					backgroundColor: 'transparent',
+					flex: 1,
+					width: '100%',
+					height: '100%'
+				}}
+				>
+				<ImageBackground
+					source={{uri: capturedImage && capturedImage.uri}}
+					style={{
+					flex: 1
+					}}
+				>
+					<View style={styles.container}>
+						{/* SAVE ICON */}
+						<CameraIcon
+							onPress={__handleSaveCurrent}
+							right="20%"
+							bottom="3%"
+							size={65}
+							name="check-circle"
+							color="#69b00b"
+						/>
+						{/* RETAKE ICON */}
+						<CameraIcon
+							onPress={__handleRetakePicture}
+							left="20%"
+							bottom="3%"
+							size={65}
+							name="cancel"
+							color="#e70d4f"
+						/>
+					</View>
+
+				</ImageBackground>
+				</View>
+			)
+			}
 		</View>
 	);
 };
