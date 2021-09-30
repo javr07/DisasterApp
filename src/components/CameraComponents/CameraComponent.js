@@ -55,18 +55,44 @@ const CameraComponent = ({ navigation, rootStore }) => {
 	const __handleTakePicture = async () => {
 		if (!cameraRef) return;
 		const photo = await cameraRef.current.takePictureAsync();
-		console.log(photo);
 		setPreviewVisible(true);
 		setCapturedImage(photo);
 	};
-	const __handleRetakePicture = async () => {
+	const __handleRetakePicture = () => {
 		setCapturedImage(null);
 		setPreviewVisible(false);
 	};
-	const __handleSaveCurrent= async () => {
-		console.log(capturedImage); //SEND THIS PHOTO TO THE NEXT COMPONENT		
-		navigation.navigate('Map');
+	const __handleSaveCurrent = async () => {
+		console.log(capturedImage); //SEND THIS PHOTO TO THE NEXT COMPONENT
+		const reportId = 2; //Primero enviar el reporte y después enviar la foto con el ID del reporte.
+		const response = await uploadPhoto(reportId, capturedImage); //OJO ESTO ES LENTO
+		if(response.status == 200) {
+			alert('OK. Foto guardada');
+		} else {
+			alert('ERROR externo, no se pudo guardar');
+		}		
+		//navigation.navigate('Map');
 	};
+	const uploadPhoto = (reportId, data) => {
+		var formData = new FormData();
+		formData.append('image', { uri: data.uri, name: 'image.jpg', type: 'image/jpg'});
+		let options = {
+		  headers: {
+			'Content-Type': 'multipart/form-data'
+		  },
+		  method: 'POST',
+		  body: formData
+		};
+		console.log(options);
+		const path = `http://187.189.23.174:8008/api/itddo/saveReportPhoto/${reportId}`;
+		return fetch(path, options)
+			.then(response => response.json()) 
+			.then(responseJson => {
+				return responseJson;
+			}).catch(() => {
+				alert('ERROR interno, no se pudo enviar');
+			});
+	  }
 
 	// COMPONENT JSX
 	return (
