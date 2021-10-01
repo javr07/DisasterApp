@@ -54,7 +54,7 @@ const CameraComponent = ({ navigation, rootStore }) => {
 
 	const __handleTakePicture = async () => {
 		if (!cameraRef) return;
-		const photo = await cameraRef.current.takePictureAsync();
+		const photo = await cameraRef.current.takePictureAsync({quality: 0.5});
 		setPreviewVisible(true);
 		setCapturedImage(photo);
 	};
@@ -63,13 +63,13 @@ const CameraComponent = ({ navigation, rootStore }) => {
 		setPreviewVisible(false);
 	};
 	const __handleSaveCurrent = async () => {
-		console.log(capturedImage); //SEND THIS PHOTO TO THE NEXT COMPONENT
-		const reportId = 2; //Primero enviar el reporte y después enviar la foto con el ID del reporte.
-		const response = await uploadPhoto(reportId, capturedImage); //OJO ESTO ES LENTO
+		console.log(capturedImage); 
+		const reportId = 1; //Primero enviar el reporte y después enviar la foto con el ID del reporte.
+		const response = await uploadPhoto(reportId, capturedImage); //OJO PUEDE SER LENTO
 		if(response.status == 200) {
 			alert('OK. Foto guardada');
 		} else {
-			alert('ERROR externo, no se pudo guardar');
+			alert(t('camera.error.extern'));
 		}		
 		//navigation.navigate('Map');
 	};
@@ -83,14 +83,13 @@ const CameraComponent = ({ navigation, rootStore }) => {
 		  method: 'POST',
 		  body: formData
 		};
-		console.log(options);
-		const path = `http://187.189.23.174:8008/api/itddo/saveReportPhoto/${reportId}`;
+		const path = `http://187.189.23.174:8008/api/itddo/saveReportPhoto/${reportId}`; //Esto después tal vez pueda ser jalado de una configuración
 		return fetch(path, options)
 			.then(response => response.json()) 
 			.then(responseJson => {
 				return responseJson;
 			}).catch(() => {
-				alert('ERROR interno, no se pudo enviar');
+				alert(t('camera.error.intern'));
 			});
 	  }
 

@@ -108,5 +108,8 @@
 	"task.table.header.new": "Meter status",
 	"task.table.existent": "Existent",
 	"task.table.new": "New",
-	"task.table.total": "Meters assigned"
+	"task.table.total": "Meters assigned",
+
+	"camera.error.intern": "We could not send the photo, check your network",
+	"camera.error.extern": "We could not save the photo, try later"
 }

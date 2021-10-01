@@ -109,5 +109,8 @@
 	"task.table.header.new": "Estatus del medidor",
 	"task.table.existent": "Existente",
 	"task.table.new": "Nuevo",
-	"task.table.total": "Medidores asignados"
+	"task.table.total": "Medidores asignados",
+
+	"camera.error.intern": "No pudimos enviar la fotografía, verifica tu conexión",
+	"camera.error.extern": "No pudimos guardar la fotografía, intenta más tarde"
 }
