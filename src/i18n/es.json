@@ -112,5 +112,6 @@
 	"task.table.total": "Medidores asignados",
 
 	"camera.error.intern": "No pudimos enviar la fotografía, verifica tu conexión",
-	"camera.error.extern": "No pudimos guardar la fotografía, intenta más tarde"
+	"camera.error.extern": "No pudimos guardar la fotografía, intenta más tarde",
+	"captcha.title": "Confirma tu acción"
 }

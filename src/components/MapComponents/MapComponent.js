@@ -1,19 +1,17 @@
 // MAIN IMPORTS
 import React, { useEffect, useRef } from 'react';
-import { StyleSheet, SafeAreaView, StatusBar, Platform, BackHandler, Alert } from 'react-native';
+import { StyleSheet, SafeAreaView, StatusBar, Platform, BackHandler, Alert, View } from 'react-native';
 import { inject, observer } from 'mobx-react';
 import MapView, { Polyline, PROVIDER_GOOGLE } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { useTranslation } from 'react-i18next';
 import Modal from 'react-native-modal';
+import { FirebaseRecaptchaVerifierModal } from 'expo-firebase-recaptcha';
+import firebase from '../../../config/Firebase';
 
 // COMPONENT IMPORTS
 import SearchbarComponent from '../SearchbarComponent';
 import MapIcon from './MapIcon';
-import TransformerMarker from './TransformerMarker';
-import MeterMarker from './MeterMarker';
-import NewMeterMarker from './NewMeterMarker';
-import NewTransformerMarker from './NewTransformerMarker';
 import MeterIcon from './MeterIcon';
 import TransformerIcon from './TransformerIcon';
 import ModalView from './ModalView';
@@ -49,6 +47,8 @@ const MapComponent = ({ navigation, rootStore }) => {
 	const { configStore, equipmentStore, mapStore, authStore } = rootStore;
 	const { t } = useTranslation();
 	const mapRef = useRef(null);
+	const recaptchaVerifier = useRef(null);
+	const firebaseConfig = firebase.options;
 	// EQUIPMENT FECTH FUNCTION
 	const fetchMeters = async () => {
 		let response;
@@ -325,23 +325,9 @@ const MapComponent = ({ navigation, rootStore }) => {
 		}
 	}
 	//SET POLYLINES FROM SELECTED TRANSFORMER TO METERS ASSIGNED
-	const __handleSetPolyline = () => {
-		if (mapStore.polylineState) {
-			mapStore.setPolylineState(false);
-			showMetersAssignedMap(false);
-			mapStore.setOffModal();
-			mapStore.setTransMeterCoordinates();
-		} else if (!mapStore.polylineState && mapStore.metersAssigned) {
-			if (mapStore.selectedTransformer) {
-				assignMeterTransCoordinates();
-				showMetersAssignedMap(true);
-				mapStore.setPolylineState(true);
-			} else {
-				alert(t('map.polyline.error.trans'));
-			}	
-		} else {
-			alert(t('map.polyline.error.empty'));
-		}
+	const __handleSetPolyline = async () => {
+		const verification = await recaptchaVerifier.current.verify();
+		console.log(verification);
 	};
 
 	// GET POSITION FUNCTION
@@ -625,7 +611,14 @@ const MapComponent = ({ navigation, rootStore }) => {
 	// COMPONENTN JSX
 	return (
 		<SafeAreaViewStyled>
-
+			<FirebaseRecaptchaVerifierModal
+				ref={recaptchaVerifier}
+				firebaseConfig={firebaseConfig}
+				attemptInvisibleVerification={false}
+				languageCode={configStore.language}
+				title={t('captcha.title')}
+				cancelLabel={t('msg.cancel')}
+			/>
 
 
 				{mapStore.isMeterUnassignLayer && 
